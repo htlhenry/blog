@@ -4,8 +4,8 @@
 
 # Site
 title: openfun's blog
-subtitle: some small things
-description: some small things too
+subtitle: 随手写点
+description:
 author: hantenglei
 language: 
 - zh-cn
@@ -41,7 +41,7 @@ relative_link: false
 future: true
 highlight:
   enable: true
-  line_number: true
+  line_number: false
   auto_detect: false
   tab_replace:
   
