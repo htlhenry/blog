@@ -83,4 +83,4 @@ theme: clean-blog
 deploy:
   type: git
   repo: git@github.com:htlhenry/blog.git
-  branch: master
+  branch: gh-pages
