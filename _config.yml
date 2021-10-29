@@ -82,5 +82,5 @@ theme: clean-blog
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: git@openfun.me:/data/blog_repo/blog.git
+  repo: git@github.com:htlhenry/blog.git
   branch: master
