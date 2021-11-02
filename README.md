@@ -2,5 +2,7 @@
 
 个人网站:
 
-[http://openfun.me](http://openfun.me)
+旧域名 <del>[http://openfun.me](http://openfun.me)<del>
+
+git-pages [https://htlhenry.github.io/blog/](https://htlhenry.github.io/blog/)
 
