@@ -4,7 +4,7 @@
 
 # Site
 title: openfun's blog
-subtitle: 随手写点，浪花一朵朵
+subtitle: 随记
 description:
 author: hantenglei
 language: 
@@ -33,7 +33,6 @@ skip_render:
 new_post_name: :title.md # File name of new posts
 default_layout: post
 titlecase: false # Transform title into titlecase
-external_link: true # Open external links in new tab
 filename_case: 0
 render_drafts: false
 post_asset_folder: false
@@ -76,7 +75,7 @@ pagination_dir: page
 ## Themes: https://hexo.io/themes/
 # theme: landscape
 # theme: anatole
-theme: clean-blog
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
