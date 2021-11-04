@@ -20,20 +20,22 @@
     var CONFIG = {"hostname":"htlhenry.github.io","root":"/blog/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="守护进程守护进程(daemon)生存期长的一种进程。它们没有控制终端，所以说它们是在后台运行的。使用Python做一个守护进程简单方法是fork, 但是有fork和double fork magic fork：import osimport syspid &#x3D; os.fork()  # 只fork一次，然后主进程退出，子进程称为孤儿进程被init进程接管，在后台运行。if pid &gt; 0:	s">
+  <meta name="description" content="istio与envoy的关系服务网格中的概念分为控制平面和数据平面，控制平面是istio，数据平面是envoy。   图片摘自 istio.io  控制平面的作用可以理解为配置中心server(或者说管理server)，负责配置的获取和配置的下发。数据平面就是服务侧的透明代理，所有服务的流量都通过数据平面进行转发。 istio作为以k8s为基础的服务网格，配置项的设置是通过CRD(CustomRe">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python创建守护进程">
-<meta property="og:url" content="http://htlhenry.github.io/blog/2017/10/20/Python%E5%88%9B%E5%BB%BA%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/index.html">
+<meta property="og:title" content="istio与envoy">
+<meta property="og:url" content="http://htlhenry.github.io/blog/2021/11/04/istio%E4%B8%8Eenvoy/index.html">
 <meta property="og:site_name" content="openfun&#39;s blog">
-<meta property="og:description" content="守护进程守护进程(daemon)生存期长的一种进程。它们没有控制终端，所以说它们是在后台运行的。使用Python做一个守护进程简单方法是fork, 但是有fork和double fork magic fork：import osimport syspid &#x3D; os.fork()  # 只fork一次，然后主进程退出，子进程称为孤儿进程被init进程接管，在后台运行。if pid &gt; 0:	s">
+<meta property="og:description" content="istio与envoy的关系服务网格中的概念分为控制平面和数据平面，控制平面是istio，数据平面是envoy。   图片摘自 istio.io  控制平面的作用可以理解为配置中心server(或者说管理server)，负责配置的获取和配置的下发。数据平面就是服务侧的透明代理，所有服务的流量都通过数据平面进行转发。 istio作为以k8s为基础的服务网格，配置项的设置是通过CRD(CustomRe">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2017-10-20T11:25:39.000Z">
-<meta property="article:modified_time" content="2017-10-21T12:00:57.000Z">
+<meta property="og:image" content="https://istio.io/latest/img/service-mesh.svg">
+<meta property="og:image" content="https://www.envoyproxy.io/docs/envoy/latest/_images/eds-same-stream.svg">
+<meta property="article:published_time" content="2021-11-04T06:51:58.000Z">
+<meta property="article:modified_time" content="2021-11-04T06:51:58.859Z">
 <meta property="article:author" content="hantenglei">
-<meta property="article:tag" content="守护进程">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://istio.io/latest/img/service-mesh.svg">
 
-<link rel="canonical" href="http://htlhenry.github.io/blog/2017/10/20/Python%E5%88%9B%E5%BB%BA%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/">
+<link rel="canonical" href="http://htlhenry.github.io/blog/2021/11/04/istio%E4%B8%8Eenvoy/">
 
 
 <script id="page-configurations">
@@ -46,7 +48,7 @@
   };
 </script>
 
-  <title>Python创建守护进程 | openfun's blog</title>
+  <title>istio与envoy | openfun's blog</title>
   
 
 
@@ -152,7 +154,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://htlhenry.github.io/blog/2017/10/20/Python%E5%88%9B%E5%BB%BA%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/">
+    <link itemprop="mainEntityOfPage" href="http://htlhenry.github.io/blog/2021/11/04/istio%E4%B8%8Eenvoy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/blog/images/avatar.gif">
@@ -165,7 +167,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Python创建守护进程
+          istio与envoy
         </h1>
 
         <div class="post-meta">
@@ -175,22 +177,23 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2017-10-20 19:25:39" itemprop="dateCreated datePublished" datetime="2017-10-20T19:25:39+08:00">2017-10-20</time>
+              <time title="创建时间：2021-11-04 14:51:58" itemprop="dateCreated datePublished" datetime="2021-11-04T14:51:58+08:00">2021-11-04</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2017-10-21 20:00:57" itemprop="dateModified" datetime="2017-10-21T20:00:57+08:00">2017-10-21</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/blog/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                  <a href="/blog/categories/istio/" itemprop="url" rel="index"><span itemprop="name">istio</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/istio/envoy/" itemprop="url" rel="index"><span itemprop="name">envoy</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/istio/envoy/%E4%BA%91%E5%8E%9F%E7%94%9F/" itemprop="url" rel="index"><span itemprop="name">云原生</span></a>
                 </span>
             </span>
 
@@ -205,21 +208,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="守护进程"><a href="#守护进程" class="headerlink" title="守护进程"></a>守护进程</h3><p>守护进程(daemon)生存期长的一种进程。它们没有控制终端，所以说它们是在后台运行的。使用Python做一个守护进程简单方法是<code>fork</code>, 但是有<code>fork</code>和<code>double fork magic</code></p>
-<h5 id="fork："><a href="#fork：" class="headerlink" title="fork："></a>fork：</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import os</span><br><span class="line">import sys</span><br><span class="line"></span><br><span class="line">pid = os.fork()  # 只fork一次，然后主进程退出，子进程称为孤儿进程被init进程接管，在后台运行。</span><br><span class="line">if pid &gt; 0:</span><br><span class="line">	sys.exit()</span><br><span class="line">...</span><br><span class="line">do_something_in_child_process()</span><br></pre></td></tr></table></figure>
-
-<h5 id="double-fork"><a href="#double-fork" class="headerlink" title="double-fork:"></a>double-fork:</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import os</span><br><span class="line">import sys</span><br><span class="line"></span><br><span class="line">os.umask(0)      # ①</span><br><span class="line"></span><br><span class="line">pid = os.fork()  # ②</span><br><span class="line">if pid &gt; 0:      # 父进程退出</span><br><span class="line">	sys.exit()</span><br><span class="line"></span><br><span class="line">os.setsid()      # ③</span><br><span class="line">pid = os.fork()  </span><br><span class="line">if pid &gt; 0:</span><br><span class="line">	sys.exit()  # 第一次fork的子进程退出</span><br><span class="line"></span><br><span class="line">os.chdir(&#x27;/&#x27;)  # ④</span><br><span class="line">si = open(&#x27;/dev/null&#x27;, &#x27;r&#x27;)  </span><br><span class="line">so = open(&#x27;/dev/null&#x27;, &#x27;a+&#x27;)</span><br><span class="line">se = open(&#x27;/dev/null&#x27;, &#x27;a+&#x27;)</span><br><span class="line"></span><br><span class="line">os.dup2(si.fileno(), sys.stdin.fileno())</span><br><span class="line">os.dup2(so.fileno(), sys.stdout.fileno())</span><br><span class="line">os.dup2(se.fileno(), sys.stderr.fileno())</span><br><span class="line"></span><br><span class="line">daemon()   # 孙子进程在后台开始运行。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>① 修改文件权限，具体看场景，为什么要修改权限，因为继承来的权限可能会被设置为拒绝某些权限(不过大家都是用root起进程的，你懂得😉)。</p>
-<p>② 调用fork使父进程exit。为什么？第一，让shell认为该命令已经执行完毕。第二，保证子进程不是一个进程组的组长进程。这是setsid调用的先决条件。</p>
-<p>③ 调用setsid创建一个新会话(会话是干嘛的？留个坑以后填)。调用setsid的效果是，第一，成为新会话的首进程，第二，成为一个新进程的组长进程，第三，没有控制终端。</p>
+        <h3 id="istio与envoy的关系"><a href="#istio与envoy的关系" class="headerlink" title="istio与envoy的关系"></a>istio与envoy的关系</h3><p>服务网格中的概念分为控制平面和数据平面，控制平面是istio，数据平面是envoy。</p>
+<p><img src="https://istio.io/latest/img/service-mesh.svg" alt="service-mesh"></p>
 <blockquote>
-<p>此时调用了第二次fork，这是为了防止守护进程获得控制终端。</p>
+<p>图片摘自 istio.io</p>
 </blockquote>
-<p>④ 修改当前工作目录为根目录，修改stdin, stdout, stderr等。（why? 留坑）</p>
+<p>控制平面的作用可以理解为配置中心server(或者说管理server)，负责配置的获取和配置的下发。数据平面就是服务侧的透明代理，所有服务的流量都通过数据平面进行转发。</p>
+<p>istio作为以k8s为基础的服务网格，配置项的设置是通过CRD(CustomResourceDefine)实现，配置下发到envoy是通过xDS协议，envoy通过gRPC stream订阅istio中的配置。</p>
+<p>流程图如下:</p>
+<p><img src="https://www.envoyproxy.io/docs/envoy/latest/_images/eds-same-stream.svg" alt="Multiple EDS requests on the same stream"></p>
+<p>注意是envoy去istio发现配置，而不是istio将配置发送给envoy，使用gRPC是为了更低延迟的更新配置</p>
 <blockquote>
-<p>为什么要double-fork，在基于System V的系统中，有些人建议再次fork，终止父进程，继续使用子进程中的守护进程。这就保证了该守护进程不是会话首进程，可以防止它获取控制终端。 </p>
-<p>参见《UNIX环境高级编程》- - - 13.3编程规则。</p>
+<p>xds协议的介绍，图片摘自envoy官方文档: <a target="_blank" rel="noopener" href="https://www.envoyproxy.io/docs/envoy/latest/api-docs/xds_protocol#xds-protocol">https://www.envoyproxy.io/docs/envoy/latest/api-docs/xds_protocol#xds-protocol</a> </p>
+</blockquote>
+<p>istio也有支持其他数据平面的趋势，需要数据平面支持xds协议，但是目前看来istio还是离不开envoy，就像k8s目前离不开docker一样，两者的关系也有一定的相似。</p>
+<h3 id="istio的优势"><a href="#istio的优势" class="headerlink" title="istio的优势"></a>istio的优势</h3><p>个人感觉istio最大的优势是<strong>简化了envoy的配置</strong>，原始的envoy配置是十分复杂的，有一定的使用成本，istio在这方面做了抽象，减少了使用者的使用成本。</p>
+<p>比如: authorizationpolicies.security.istio.io这个CRD通过结合envoy的http-filter的ext_authz和rbac filter实现了对服务的自定义认证，简化了其中大量的配置，大大的减少了使用成本.</p>
+<p>优先推荐使用gRPC的方式实现外部认证server，istio对于http的外部认证server的一些配置支持的比较慢，当想要使用http server实现方式时，有些配置在envoy中有，但是istio中没有，可能不得不去了解envoy的文档，自己写略微复杂一点的envoy filter，当然其中的调试工作也是比较复杂的。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/istio/istio/issues/27790#event-5281877115">https://github.com/istio/istio/issues/27790#event-5281877115</a></p>
 </blockquote>
 
     </div>
@@ -229,9 +236,6 @@
     
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/blog/tags/%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/" rel="tag"># 守护进程</a>
-          </div>
 
         
 
@@ -239,13 +243,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/blog/2017/10/20/Python%E5%85%83%E7%B1%BBFAQ/" rel="prev" title="Python元类FAQ">
-      <i class="fa fa-chevron-left"></i> Python元类FAQ
+    <a href="/blog/2021/11/02/mysql%E9%94%81/" rel="prev" title="mysql锁">
+      <i class="fa fa-chevron-left"></i> mysql锁
     </a></div>
-      <div class="post-nav-item">
-    <a href="/blog/2018/09/21/Flask-Login%E5%8A%A0%E5%AF%86%E8%BF%87%E7%A8%8B/" rel="next" title="Flask-Login加密过程">
-      Flask-Login加密过程 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -304,7 +305,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">守护进程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#fork%EF%BC%9A"><span class="nav-number">1.0.1.</span> <span class="nav-text">fork：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#double-fork"><span class="nav-number">1.0.2.</span> <span class="nav-text">double-fork:</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#istio%E4%B8%8Eenvoy%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.</span> <span class="nav-text">istio与envoy的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#istio%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="nav-number">2.</span> <span class="nav-text">istio的优势</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

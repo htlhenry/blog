@@ -146,6 +146,100 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN,default">
+    <link itemprop="mainEntityOfPage" href="http://htlhenry.github.io/blog/2021/11/04/istio%E4%B8%8Eenvoy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/avatar.gif">
+      <meta itemprop="name" content="hantenglei">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="openfun's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/blog/2021/11/04/istio%E4%B8%8Eenvoy/" class="post-title-link" itemprop="url">istio与envoy</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-04 14:51:58" itemprop="dateCreated datePublished" datetime="2021-11-04T14:51:58+08:00">2021-11-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/istio/" itemprop="url" rel="index"><span itemprop="name">istio</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/istio/envoy/" itemprop="url" rel="index"><span itemprop="name">envoy</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/istio/envoy/%E4%BA%91%E5%8E%9F%E7%94%9F/" itemprop="url" rel="index"><span itemprop="name">云原生</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="istio与envoy的关系"><a href="#istio与envoy的关系" class="headerlink" title="istio与envoy的关系"></a>istio与envoy的关系</h3><p>服务网格中的概念分为控制平面和数据平面，控制平面是istio，数据平面是envoy。</p>
+<p><img src="https://istio.io/latest/img/service-mesh.svg" alt="service-mesh"></p>
+<blockquote>
+<p>图片摘自 istio.io</p>
+</blockquote>
+<p>控制平面的作用可以理解为配置中心server(或者说管理server)，负责配置的获取和配置的下发。数据平面就是服务侧的透明代理，所有服务的流量都通过数据平面进行转发。</p>
+<p>istio作为以k8s为基础的服务网格，配置项的设置是通过CRD(CustomResourceDefine)实现，配置下发到envoy是通过xDS协议，envoy通过gRPC stream订阅istio中的配置。</p>
+<p>流程图如下:</p>
+<p><img src="https://www.envoyproxy.io/docs/envoy/latest/_images/eds-same-stream.svg" alt="Multiple EDS requests on the same stream"></p>
+<p>注意是envoy去istio发现配置，而不是istio将配置发送给envoy，使用gRPC是为了更低延迟的更新配置</p>
+<blockquote>
+<p>xds协议的介绍，图片摘自envoy官方文档: <a target="_blank" rel="noopener" href="https://www.envoyproxy.io/docs/envoy/latest/api-docs/xds_protocol#xds-protocol">https://www.envoyproxy.io/docs/envoy/latest/api-docs/xds_protocol#xds-protocol</a> </p>
+</blockquote>
+<p>istio也有支持其他数据平面的趋势，需要数据平面支持xds协议，但是目前看来istio还是离不开envoy，就像k8s目前离不开docker一样，两者的关系也有一定的相似。</p>
+<h3 id="istio的优势"><a href="#istio的优势" class="headerlink" title="istio的优势"></a>istio的优势</h3><p>个人感觉istio最大的优势是<strong>简化了envoy的配置</strong>，原始的envoy配置是十分复杂的，有一定的使用成本，istio在这方面做了抽象，减少了使用者的使用成本。</p>
+<p>比如: authorizationpolicies.security.istio.io这个CRD通过结合envoy的http-filter的ext_authz和rbac filter实现了对服务的自定义认证，简化了其中大量的配置，大大的减少了使用成本.</p>
+<p>优先推荐使用gRPC的方式实现外部认证server，istio对于http的外部认证server的一些配置支持的比较慢，当想要使用http server实现方式时，有些配置在envoy中有，但是istio中没有，可能不得不去了解envoy的文档，自己写略微复杂一点的envoy filter，当然其中的调试工作也是比较复杂的。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/istio/istio/issues/27790#event-5281877115">https://github.com/istio/istio/issues/27790#event-5281877115</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN,default">
     <link itemprop="mainEntityOfPage" href="http://htlhenry.github.io/blog/2021/11/02/mysql%E9%94%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -231,63 +325,6 @@
 
 <h5 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h5><p><code>where</code>条件必须加索引，加上索引是行锁，否则就是锁表。索引类型可以是主键索引，唯一索引，普通索引。</p>
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN,default">
-    <link itemprop="mainEntityOfPage" href="http://htlhenry.github.io/blog/2018/09/28/%E8%93%9D%E7%BB%BF%E9%83%A8%E7%BD%B2%E5%92%8C%E9%87%91%E4%B8%9D%E9%9B%80%E5%8F%91%E5%B8%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/blog/images/avatar.gif">
-      <meta itemprop="name" content="hantenglei">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="openfun's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/blog/2018/09/28/%E8%93%9D%E7%BB%BF%E9%83%A8%E7%BD%B2%E5%92%8C%E9%87%91%E4%B8%9D%E9%9B%80%E5%8F%91%E5%B8%83/" class="post-title-link" itemprop="url">蓝绿部署和金丝雀发布</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-09-28 15:26:24" itemprop="dateCreated datePublished" datetime="2018-09-28T15:26:24+08:00">2018-09-28</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
       
     </div>
 
@@ -634,7 +671,7 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/blog/categories/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
